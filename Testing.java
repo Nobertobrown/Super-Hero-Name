@@ -24,5 +24,9 @@ public class Testing {
         for (String City : TzPlaces) {
             System.out.println(City);
         }
+
+        String me = TzCities.get(0);
+        String you = "Dar";
+        System.out.println(you == me);
     }
 }

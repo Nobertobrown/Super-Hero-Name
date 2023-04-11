@@ -12,6 +12,8 @@ class Random {
 abstract class HeroName extends Random {
     public ArrayList<String> prefixes = new ArrayList<String>();
     public ArrayList<String> suffixes = new ArrayList<String>();
+    public ArrayList<String> femaleSuffixes = new ArrayList<String>();
+    public ArrayList<String> maleSuffixes = new ArrayList<String>();
     public String fullName;
 
     public abstract String setName(HashMap<String, String> candidates);
@@ -25,25 +27,40 @@ abstract class HeroName extends Random {
         prefixes.add("Star");
         prefixes.add("Moon");
 
-        suffixes.add("man");
-        suffixes.add("boy");
-        suffixes.add("kid");
-        suffixes.add("lad");
-        suffixes.add("woman");
-        suffixes.add("girl");
+        maleSuffixes.add("man");
+        maleSuffixes.add("boy");
+        maleSuffixes.add("lad");
+        femaleSuffixes.add("woman");
+        femaleSuffixes.add("girl");
         suffixes.add("master");
+        suffixes.add("kid");
     }
 }
 
 class Hero extends HeroName {
     public String setName(HashMap<String, String> candidates) {
         int method = Random.getRandomNumber(7);
+        ArrayList<String> finalSuffixes = new ArrayList<String>();
         int prefixIndex = Random.getRandomNumber(prefixes.size());
-        int suffixIndex = Random.getRandomNumber(suffixes.size());
+        String gender = candidates.get("Gender");
+        String animal = candidates.get("Animal");
+        String color = candidates.get("Color");
+
+        if (gender.equals("m")) {
+            finalSuffixes.addAll(maleSuffixes);
+            finalSuffixes.addAll(suffixes);
+        } else if (gender.equals("f")) {
+            finalSuffixes.addAll(femaleSuffixes);
+            finalSuffixes.addAll(suffixes);
+        } else {
+            throw new Error("Enter a valid gender!");
+        }
+
+        int suffixIndex = Random.getRandomNumber(finalSuffixes.size());
 
         HeroAffix affixes = new HeroAffix();
         affixes.setPrefix(prefixes.get(prefixIndex));
-        affixes.setSuffix(suffixes.get(suffixIndex));
+        affixes.setSuffix(finalSuffixes.get(suffixIndex));
 
         String prefix = affixes.getPrefix();
         String suffix = affixes.getSuffix();
@@ -57,19 +74,19 @@ class Hero extends HeroName {
                 heroName = suffix + prefix;
                 break;
             case 2:
-                heroName = candidates.get("Animal");
+                heroName = animal;
                 break;
             case 3:
-                heroName = candidates.get("Animal") + prefix;
+                heroName = animal + prefix;
                 break;
             case 4:
-                heroName = candidates.get("Animal") + suffix;
+                heroName = animal + suffix;
                 break;
             case 5:
-                heroName = candidates.get("Color") + candidates.get("Animal");
+                heroName = color + animal;
                 break;
             case 6:
-                heroName = "The " + candidates.get("Color") + candidates.get("Animal");
+                heroName = "The " + color + animal;
                 break;
             default:
                 return "Sorry, a problem occured while generating your name, please try again!";
@@ -88,14 +105,14 @@ class MainClass extends Hero {
         System.out.println("What is your gender?(M or F)");
         String Gender = userInput.nextLine();
 
-        System.out.println("What is your favorite animal?");
+        System.out.println("\nWhat is your favorite animal?");
         String Animal = userInput.nextLine();
 
-        System.out.println("What is your favorite color?");
+        System.out.println("\nWhat is your favorite color?");
         String Color = userInput.nextLine();
         userInput.close();
 
-        options.put("Gender", Gender);
+        options.put("Gender", Gender.toLowerCase());
         options.put("Animal", Animal);
         options.put("Color", Color);
 
@@ -103,6 +120,6 @@ class MainClass extends Hero {
         myHero.fillAffixes();
         myHero.fullName = myHero.setName(options);
 
-        System.out.println("Your superhero name is " + myHero.fullName);
+        System.out.println("\nYour superhero name is " + myHero.fullName);
     }
 }
