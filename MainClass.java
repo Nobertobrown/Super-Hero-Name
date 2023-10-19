@@ -9,6 +9,7 @@ class Random {
     }
 }
 
+/****** ABSTRACTION ******/
 abstract class HeroName extends Random {
     public ArrayList<String> prefixes = new ArrayList<String>();
     public ArrayList<String> suffixes = new ArrayList<String>();
@@ -96,6 +97,7 @@ class Hero extends HeroName {
 
 }
 
+/****** INHERITANCE ******/
 class MainClass extends Hero {
     static public void main(String[] args) {
         Scanner userInput = new Scanner(System.in);

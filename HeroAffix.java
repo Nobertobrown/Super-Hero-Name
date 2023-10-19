@@ -1,3 +1,4 @@
+/****** ENCAPSULATON *****/
 class HeroAffix {
     private String Prefix;
     private String Suffix;
